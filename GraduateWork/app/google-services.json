@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "800160540206",
+    "project_id": "apporderfood-7337a",
+    "storage_bucket": "apporderfood-7337a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:800160540206:android:356dd7c4dc65285803a1bf",
+        "android_client_info": {
+          "package_name": "com.example.graduatework"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDtb6yrzE4yln1aRZdYN3C88eKwobS-Gvw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
