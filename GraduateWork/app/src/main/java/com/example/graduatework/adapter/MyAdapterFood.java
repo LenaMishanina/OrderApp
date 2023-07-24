@@ -21,17 +21,22 @@ public class MyAdapterFood extends RecyclerView.Adapter<MyAdapterFood.ViewHolder
     Context context;
     ArrayList<Food> list;
 
-    public MyAdapterFood(Context context, ArrayList<Food> list) {
+    final View.OnClickListener onClickListener;
+
+
+    public MyAdapterFood(Context context, ArrayList<Food> list, View.OnClickListener onClickListener) {
         this.context = context;
         this.list = list;
+        this.onClickListener = onClickListener;
     }
+
 
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.food_item, parent, false);
-
+        view.setOnClickListener(onClickListener);
         return new ViewHolder(view);
     }
 

@@ -102,15 +102,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     MyAdapterMenu myAdapterMenu;
     ArrayList<Category> categoryList;
-//
-//    final View.OnClickListener onClickListener = new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            int itemPosition = recyclerMenu.getChildLayoutPosition(v);
-//            Category item = categoryList.get(itemPosition);
-//            Toast.makeText(Home.this, item.getName(), Toast.LENGTH_SHORT).show();
-//        }
-//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,12 +150,14 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             public void onClick(View v) {
                 int itemPosition = recyclerMenu.getChildLayoutPosition(v);
                 Category item = categoryList.get(itemPosition);
-                Toast.makeText(Home.this, item.getName(), Toast.LENGTH_SHORT).show();
+//                Toast.makeText(Home.this, item.getName(), Toast.LENGTH_SHORT).show();
+
+                Log.v("CATEGORY NAME CLICK", item.getName());
 
                 database.orderByChild("Name").equalTo(item.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                  //      Log.v("I_M_HERE", "I M HERE");
+                        Log.v("I_M_HERE", "I M HERE");
                    //     Log.v("GET_KEY", snapshot.child(item.getName()).getRef().getKey());
 
                         String key = "no(";
@@ -175,7 +168,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
                             Toast.makeText(Home.this, childSnapshot.getKey(), Toast.LENGTH_SHORT).show();
                         }
 
-                        Log.v("KEYYYY", key);
+                        Log.v("KEYYYY CATEGORY", key);
                         Intent toFoodList=new Intent(Home.this, FoodList.class);
                         toFoodList.putExtra("CategoryId", key);
                         startActivity(toFoodList);
@@ -212,10 +205,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             }
         });
-
-        //click
-
-
 
 
     }
