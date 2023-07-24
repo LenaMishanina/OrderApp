@@ -42,20 +42,25 @@
 
 package com.example.graduatework;
 
+        import android.annotation.SuppressLint;
         import android.os.Bundle;
         import com.example.graduatework.Common.Common;
         import com.example.graduatework.Common.ItemClickListener;
+        import com.example.graduatework.adapter.MyAdapterMenu;
         import com.example.graduatework.database.Category;
         import com.example.graduatework.viewHolder.MenuViewHolder;
         import com.firebase.ui.database.FirebaseRecyclerOptions;
         import com.google.android.material.floatingactionbutton.FloatingActionButton;
         import com.google.android.material.navigation.NavigationView;
         import com.google.android.material.snackbar.Snackbar;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
 
         import com.firebase.ui.database.FirebaseRecyclerAdapter;
         import com.google.firebase.database.Query;
+        import com.google.firebase.database.ValueEventListener;
         import com.squareup.picasso.Picasso;
 
         import androidx.annotation.NonNull;
@@ -79,19 +84,22 @@ package com.example.graduatework;
         import androidx.recyclerview.widget.RecyclerView;
         import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 
+        import java.util.ArrayList;
 
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private AppBarConfiguration appBarConfiguration;
 
-    FirebaseDatabase database;
-    DatabaseReference category;
+    DatabaseReference database;
 
     TextView tvFullName;
 
     RecyclerView recyclerMenu;
     RecyclerView.LayoutManager layoutManager;
+
+    MyAdapterMenu myAdapterMenu;
+    ArrayList<Category> categoryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,8 +110,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         toolbar.setTitle("Menu");
         setSupportActionBar(toolbar);
 
-        database = FirebaseDatabase.getInstance();
-        category = database.getReference("Category");
+        database = FirebaseDatabase.getInstance().getReference("Category");
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -132,19 +139,30 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         recyclerMenu = (RecyclerView) findViewById(R.id.recycleMenu);
         recyclerMenu.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(this);
+        recyclerMenu.setLayoutManager(layoutManager);
 
+        categoryList = new ArrayList<>();
+        myAdapterMenu=new MyAdapterMenu(this,categoryList);
+        recyclerMenu.setAdapter(myAdapterMenu);
 
-        Query query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Category");
-        FirebaseRecyclerOptions<Category> options =
-                new FirebaseRecyclerOptions.Builder<Category>()
-                        .setQuery(query, Category.class)
-                        .build();
+        database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Category category = dataSnapshot.getValue(Category.class);
+                    categoryList.add(category);
+                }
+                myAdapterMenu.notifyDataSetChanged();
+                //        Toast.makeText(Home.this, categoryList.get(0).getName(), Toast.LENGTH_SHORT).show();
+            }
 
-//        Toast.makeText(Home.this, "load menu 1", Toast.LENGTH_SHORT).show();
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
 
-        loadMenu(options);
+            }
+        });
+
 
 
 
