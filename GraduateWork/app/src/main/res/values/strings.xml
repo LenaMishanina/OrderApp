@@ -11,6 +11,11 @@
     <string name="closeNav">Close nav</string>
     <string name="nameMenu">Menu name</string>
 
+
+    <string name="gram">гр</string>
+
+
+
     <!--  menu  -->
     <string name="nav_menu">Menu</string>
     <string name="nav_cart">Cart</string>
