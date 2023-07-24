@@ -20,16 +20,33 @@ public class MyAdapterMenu extends RecyclerView.Adapter<MyAdapterMenu.ViewHolder
     Context context;
     ArrayList<Category> list;
 
-    public MyAdapterMenu(Context context, ArrayList<Category> list) {
+    final View.OnClickListener onClickListener;
+
+//    final View.OnClickListener onClickListener=new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            int itemPosition = RecyclerView.getChildLayoutPosition(v);
+//            String item = mList.get(itemPosition);
+//            Toast.makeText(mContext, item, Toast.LENGTH_LONG).show();
+//        }
+//    };
+//
+//    public MyAdapterMenu(Context context, ArrayList<Category> list) {
+//        this.context = context;
+//        this.list = list;
+//    }
+
+    public MyAdapterMenu(Context context, ArrayList<Category> list, View.OnClickListener onClickListener) {
         this.context = context;
         this.list = list;
+        this.onClickListener = onClickListener;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.menu_item, parent, false);
-
+        view.setOnClickListener(onClickListener);
         return new ViewHolder(view);
 
     }
@@ -39,6 +56,7 @@ public class MyAdapterMenu extends RecyclerView.Adapter<MyAdapterMenu.ViewHolder
         Category category = list.get(position);
         holder.menuName.setText(category.getName());
         Glide.with(context).load(category.getImage()).into(holder.menuImage);
+
     }
 
     @Override
@@ -57,6 +75,8 @@ public class MyAdapterMenu extends RecyclerView.Adapter<MyAdapterMenu.ViewHolder
             menuName = (TextView) itemView.findViewById(R.id.menuName);
             menuImage = (ImageView) itemView.findViewById(R.id.menuImage);
         }
+
+
     }
 
 }

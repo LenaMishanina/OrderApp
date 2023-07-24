@@ -43,6 +43,7 @@
 package com.example.graduatework;
 
         import android.annotation.SuppressLint;
+        import android.content.Intent;
         import android.os.Bundle;
         import com.example.graduatework.Common.Common;
         import com.example.graduatework.Common.ItemClickListener;
@@ -66,6 +67,7 @@ package com.example.graduatework;
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.ActionBarDrawerToggle;
 
+        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.Menu;
         import android.view.MenuItem;
@@ -100,6 +102,15 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     MyAdapterMenu myAdapterMenu;
     ArrayList<Category> categoryList;
+//
+//    final View.OnClickListener onClickListener = new View.OnClickListener() {
+//        @Override
+//        public void onClick(View v) {
+//            int itemPosition = recyclerMenu.getChildLayoutPosition(v);
+//            Category item = categoryList.get(itemPosition);
+//            Toast.makeText(Home.this, item.getName(), Toast.LENGTH_SHORT).show();
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -141,8 +152,47 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         layoutManager=new LinearLayoutManager(this);
         recyclerMenu.setLayoutManager(layoutManager);
 
+
+
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int itemPosition = recyclerMenu.getChildLayoutPosition(v);
+                Category item = categoryList.get(itemPosition);
+                Toast.makeText(Home.this, item.getName(), Toast.LENGTH_SHORT).show();
+
+                database.orderByChild("Name").equalTo(item.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                  //      Log.v("I_M_HERE", "I M HERE");
+                   //     Log.v("GET_KEY", snapshot.child(item.getName()).getRef().getKey());
+
+                        String key = "no(";
+
+                        for(DataSnapshot childSnapshot : snapshot.getChildren()){
+                            Log.v("GET_KEY", childSnapshot.getKey());
+                            key = childSnapshot.getKey();
+                            Toast.makeText(Home.this, childSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        Log.v("KEYYYY", key);
+                        Intent toFoodList=new Intent(Home.this, FoodList.class);
+                        toFoodList.putExtra("CategoryId", key);
+                        startActivity(toFoodList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+
+            }
+        };
+
         categoryList = new ArrayList<>();
-        myAdapterMenu=new MyAdapterMenu(this,categoryList);
+        myAdapterMenu=new MyAdapterMenu(this,categoryList, onClickListener);
         recyclerMenu.setAdapter(myAdapterMenu);
 
         database.addValueEventListener(new ValueEventListener() {
@@ -162,6 +212,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             }
         });
+
+        //click
 
 
 
