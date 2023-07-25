@@ -17,6 +17,9 @@ public class User {
         Phone = phone;
     }
 
+    public String getPhone() {
+        return Phone;
+    }
 
     public String getName() {
         return Name;
