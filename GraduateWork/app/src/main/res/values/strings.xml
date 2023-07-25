@@ -13,7 +13,8 @@
 
 
     <string name="gram">гр</string>
-
+    <string name="total">Итог: </string>
+    <string name="placeOrder">Place Order</string>
 
 
     <!--  menu  -->

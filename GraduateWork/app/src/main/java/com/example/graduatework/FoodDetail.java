@@ -8,8 +8,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.graduatework.database.Database;
 import com.example.graduatework.database.Food;
+import com.example.graduatework.database.Order;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -76,7 +79,8 @@ public class FoodDetail extends AppCompatActivity {
                     foodName_det.setText(food.getName());
                     foodAmount_det.setText(food.getAmount());
                     foodDesc_det.setText(food.getDescription());
-                    foodPrice_det.setText(String.valueOf(Integer.parseInt(food.getPrice()) * totalItemCount));
+                    totalPrice = Integer.parseInt(food.getPrice()) * totalItemCount;
+                    foodPrice_det.setText(String.valueOf(totalPrice));
                 }
 
                 @Override
@@ -103,7 +107,8 @@ public class FoodDetail extends AppCompatActivity {
                 if (totalItemCount > 1){
                     totalItemCount--;
                     count_item.setText(String.valueOf(totalItemCount));
-                    foodPrice_det.setText(String.valueOf(Integer.parseInt(food.getPrice()) * totalItemCount));
+                    totalPrice = Integer.parseInt(food.getPrice()) * totalItemCount;
+                    foodPrice_det.setText(String.valueOf(totalPrice));
 
                 }
             }
@@ -112,7 +117,15 @@ public class FoodDetail extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new Database(getBaseContext()).addToCart(new Order(
+                        foodId,
+                        food.getName(),
+                        String.valueOf(totalItemCount),
+                        String.valueOf(totalPrice),
+                        food.getAmount()
+                ));
 
+                Toast.makeText(FoodDetail.this, "Added to Cart " + food.getName(), Toast.LENGTH_SHORT).show();
             }
         });
 
