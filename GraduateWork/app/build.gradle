@@ -92,7 +92,7 @@ dependencies {
     implementation 'androidx.navigation:navigation-ui:2.6.0'
 
 
-    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
+//    implementation 'com.amulyakhare:com.amulyakhare.textdrawable:1.0.1'
     implementation 'com.readystatesoftware.sqliteasset:sqliteassethelper:+'
 
 
