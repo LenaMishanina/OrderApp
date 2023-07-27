@@ -3,7 +3,7 @@ package com.example.graduatework.database;
 import java.util.List;
 
 public class Request {
-    private String phone, name, address, total;
+    private String phone, name, address, total, status;
     private List<Order> orderFoods;
 
     public Request() {
@@ -15,6 +15,11 @@ public class Request {
         this.address = address;
         this.total = total;
         this.orderFoods = orderFoods;
+        this.status="0"; // 0 - размещен; 1 - доставляется; 2 - доставлен
+    }
+
+    public String getStatus() {
+        return status;
     }
 
     public String getPhone() {
