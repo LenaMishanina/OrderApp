@@ -250,10 +250,16 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (id == R.id.nav_menu){
 
         }else if(id == R.id.nav_cart){
-
+            Intent intent = new Intent(Home.this, Cart.class);
+            startActivity(intent);
         }else if(id == R.id.nav_orders){
+            Intent intent = new Intent(Home.this, OrderStatus.class);
+            startActivity(intent);
 
         }else if(id == R.id.nav_logout){
+            Intent intent = new Intent(Home.this, SignIn.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
 
         }
 
