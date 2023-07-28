@@ -91,8 +91,6 @@ package com.example.graduatework;
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private AppBarConfiguration appBarConfiguration;
-
     DatabaseReference database;
 
     TextView tvFullName;

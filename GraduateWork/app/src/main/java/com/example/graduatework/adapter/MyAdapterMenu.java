@@ -22,19 +22,6 @@ public class MyAdapterMenu extends RecyclerView.Adapter<MyAdapterMenu.ViewHolder
 
     final View.OnClickListener onClickListener;
 
-//    final View.OnClickListener onClickListener=new View.OnClickListener() {
-//        @Override
-//        public void onClick(View v) {
-//            int itemPosition = RecyclerView.getChildLayoutPosition(v);
-//            String item = mList.get(itemPosition);
-//            Toast.makeText(mContext, item, Toast.LENGTH_LONG).show();
-//        }
-//    };
-//
-//    public MyAdapterMenu(Context context, ArrayList<Category> list) {
-//        this.context = context;
-//        this.list = list;
-//    }
 
     public MyAdapterMenu(Context context, ArrayList<Category> list, View.OnClickListener onClickListener) {
         this.context = context;

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class OrderStatus extends AppCompatActivity {
 
@@ -46,24 +48,37 @@ public class OrderStatus extends AppCompatActivity {
         layoutManager=new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        list = new ArrayList<>();
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-        loadOrders(Common.currentUser.getPhone());
+            }
+        };
+
+        list = new ArrayList<>();
+        myAdapterOrderStatus=new MyAdapterOrderStatus(this, list, onClickListener);
+        recyclerView.setAdapter(myAdapterOrderStatus);
+
+
+        loadOrders(Common.currentUser.getPhone(), onClickListener);
 
     }
 
-    private void loadOrders(String phone) {
+    private void loadOrders(String phone, View.OnClickListener onClickListener) {
         Log.v("ORDER LOAD", "I M IN ORDER LOAD");
 
         database.orderByChild("phone").equalTo(phone).addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 Log.v("ORDER LOAD DATA CHANGE", "I M IN ORDER LOAD DATA CHANGE");
                 for (DataSnapshot child : snapshot.getChildren()){
                     Log.v("ORDER LOAD FOR", "I M IN ORDER LOAD IN FOR");
                     Request request = child.getValue(Request.class);
+                    Log.v("REQUEST", request.getName() + ' ' + request.getAddress() + ' ' + request.getPhone());
                     list.add(request);
                 }
+                myAdapterOrderStatus.notifyDataSetChanged();
             }
 
             @Override
@@ -71,8 +86,7 @@ public class OrderStatus extends AppCompatActivity {
 
             }
         });
-
-        myAdapterOrderStatus=new MyAdapterOrderStatus(this,list);
+        myAdapterOrderStatus=new MyAdapterOrderStatus(this, list, onClickListener);
         recyclerView.setAdapter(myAdapterOrderStatus);
 
     }
