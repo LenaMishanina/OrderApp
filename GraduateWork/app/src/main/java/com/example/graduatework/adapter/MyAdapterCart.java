@@ -3,6 +3,7 @@ package com.example.graduatework.adapter;
 
 
 import android.content.Context;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.graduatework.Cart;
+import com.example.graduatework.Common.Common;
 import com.example.graduatework.Common.ItemClickListener;
 import com.example.graduatework.R;
 import com.example.graduatework.database.Order;
@@ -19,7 +21,7 @@ import com.example.graduatework.database.Order;
 import java.util.ArrayList;
 import java.util.List;
 
-class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
 
     public TextView txt_cart_name, txt_cart_price, txt_cart_count;
     private ItemClickListener itemClickListener;
@@ -35,11 +37,17 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         txt_cart_name = (TextView) itemView.findViewById(R.id.cart_item_name);
         txt_cart_price = (TextView) itemView.findViewById(R.id.cart_item_price);
         txt_cart_count = (TextView) itemView.findViewById(R.id.cart_item_count);
+        itemView.setOnCreateContextMenuListener(this);
     }
 
     @Override
     public void onClick(View v) {
 
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        menu.add(0,0,getAdapterPosition(), Common.DELETE);
     }
 }
 
