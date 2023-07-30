@@ -9,16 +9,17 @@ public class Request {
     public Request() {
     }
 
-    public Request(String phone, String name, String address, String total, String comment, String payment_option, List<Order> orderFoods) {
+    public Request(String phone, String name, String address, String total, String status, String comment, String payment_option, List<Order> orderFoods) {
         this.phone = phone;
         this.name = name;
         this.address = address;
         this.total = total;
-        this.status = "0"; // 0 - размещен; 1 - доставляется; 2 - доставлен
+        this.status = status;// 0 - размещен; 1 - доставляется; 2 - доставлен
         this.comment = comment;
         this.payment_option = payment_option;
         this.orderFoods = orderFoods;
     }
+
 
     public void setStatus(String status) {
         this.status = status;

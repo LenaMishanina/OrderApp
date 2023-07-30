@@ -9,6 +9,7 @@
 
 
     <!--    Оформление заказа    -->
+    <string name="so">Оформление заказа</string>
     <string name="so_phone">Телефон</string>
     <string name="so_name">Имя</string>
     <string name="so_address">Адресс</string>
@@ -29,7 +30,7 @@
 
     <string name="gram">гр</string>
     <string name="total">Итог: </string>
-    <string name="placeOrder">Place Order</string>
+    <string name="placeOrder">К оформлению заказу</string>
 
 
     <!--  menu  -->
