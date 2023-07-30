@@ -1,11 +1,25 @@
 <resources>
     <string name="app_name">New York</string>
-    <string name="btn_registr">Sign Up</string>
-    <string name="btn_login">Sign In</string>
-    <string name="hintNumber">Phone Number</string>
-    <string name="hintPass">Password</string>
-    <string name="hintName">Name</string>
+    <string name="btn_registr">Зарегестрироваться</string>
+    <string name="btn_login">Войти</string>
+    <string name="hintNumber">Номер телефона</string>
+    <string name="hintPass">Пароль</string>
+    <string name="hintName">Имя</string>
     <string name="remember_me">запомнить меня</string>
+
+
+    <!--    Оформление заказа    -->
+    <string name="so_phone">Телефон</string>
+    <string name="so_name">Имя</string>
+    <string name="so_address">Адресс</string>
+    <string name="so_payment_option">Способ оплаты</string>
+    <string name="so_nal">Наличные</string>
+    <string name="so_beznal">Безналичные</string>
+    <string name="so_com">Комментарий</string>
+    <string name="so_btnSetOrder">Оформить заказ</string>
+
+
+    <string name="required_field">Обязательное поле*</string>
 
 
     <string name="openNav">Open nav</string>
@@ -19,10 +33,10 @@
 
 
     <!--  menu  -->
-    <string name="nav_menu">Menu</string>
-    <string name="nav_cart">Cart</string>
-    <string name="nav_orders">Orders</string>
-    <string name="nav_logout">Sign out</string>
+    <string name="nav_menu">Меню</string>
+    <string name="nav_cart">Корзина</string>
+    <string name="nav_orders">Заказы</string>
+    <string name="nav_logout">Выйти</string>
     <string name="title_activity_main2">MainActivity2</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
