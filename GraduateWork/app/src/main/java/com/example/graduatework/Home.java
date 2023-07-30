@@ -88,6 +88,8 @@ package com.example.graduatework;
 
         import java.util.ArrayList;
 
+        import io.paperdb.Paper;
+
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
@@ -105,6 +107,8 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        Paper.init(this);
 
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Menu");
@@ -208,38 +212,6 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
-    private void loadMenu(FirebaseRecyclerOptions<Category> options) {
-  //      Toast.makeText(Home.this, "load menu 2", Toast.LENGTH_SHORT).show();
-
-//        FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter=new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, MenuViewHolder.class, R.layout.menu_item,  category) {
-        FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter=new FirebaseRecyclerAdapter<Category, MenuViewHolder>(options) {
-
-            @Override
-            public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.menu_item, parent, false);
-
-                return new MenuViewHolder(view);
-            }
-
-            @Override
-            protected void onBindViewHolder(@NonNull MenuViewHolder holder, int position, @NonNull Category model) {
-                holder.txtMenuName.setText(model.getName());
-                Picasso.with(getBaseContext()).load(model.getImage()).into(holder.imageView);
-                final Category clickItem = model;
-                holder.setItemClickListener(new ItemClickListener() {
-                    @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        Toast.makeText(Home.this, ""+clickItem.getName(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-            }
-
-        };
-        recyclerMenu.setAdapter(adapter);
-
-    }
-
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -255,6 +227,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(intent);
 
         }else if(id == R.id.nav_logout){
+            //delete data about user
+            Paper.book().destroy();
+
             Intent intent = new Intent(Home.this, SignIn.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
             startActivity(intent);

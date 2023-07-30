@@ -5,6 +5,7 @@
     <string name="hintNumber">Phone Number</string>
     <string name="hintPass">Password</string>
     <string name="hintName">Name</string>
+    <string name="remember_me">запомнить меня</string>
 
 
     <string name="openNav">Open nav</string>

@@ -5,23 +5,30 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.icu.util.LocaleData;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.graduatework.Common.Common;
 import com.example.graduatework.database.User;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import io.paperdb.Paper;
+
 public class SignIn extends AppCompatActivity {
     TextView edtPhone, edtPassword;
     Button btnSignIn;
+    CheckBox checkBox;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +36,11 @@ public class SignIn extends AppCompatActivity {
         edtPhone = (TextView) findViewById(R.id.edtPhone);
         edtPassword = (TextView) findViewById(R.id.edtPassword);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
+        checkBox = (CheckBox) findViewById(R.id.cb_rem_me);
+
+        //Init paper
+
+        Paper.init(this);
 
         //Init Firebase
         FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -37,6 +49,13 @@ public class SignIn extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //save user
+                if (checkBox.isChecked()){
+                    Paper.book().write(Common.USER_KEY, edtPhone.getText().toString());
+                    Paper.book().write(Common.PASSWD_KEY, edtPassword.getText().toString());
+                }
+
                 final ProgressDialog mDialog = new ProgressDialog(SignIn.this);
                 mDialog.setMessage("Please waiting...");
                 mDialog.show();
