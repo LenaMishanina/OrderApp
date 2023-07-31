@@ -82,6 +82,7 @@ package com.example.graduatework;
         import androidx.core.view.GravityCompat;
         import androidx.drawerlayout.widget.DrawerLayout;
         import androidx.navigation.ui.AppBarConfiguration;
+        import androidx.recyclerview.widget.GridLayoutManager;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
         import androidx.recyclerview.widget.RecyclerView.LayoutManager;
@@ -103,6 +104,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
     MyAdapterMenu myAdapterMenu;
     ArrayList<Category> categoryList;
 
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -111,7 +113,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         Paper.init(this);
 
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Menu");
+        toolbar.setTitle("Меню");
         setSupportActionBar(toolbar);
 
         database = FirebaseDatabase.getInstance().getReference("Category");
@@ -143,9 +145,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         //menu
         recyclerMenu = (RecyclerView) findViewById(R.id.recycleMenu);
         recyclerMenu.setHasFixedSize(true);
-        layoutManager=new LinearLayoutManager(this);
-        recyclerMenu.setLayoutManager(layoutManager);
-
+//        layoutManager=new LinearLayoutManager(this);
+//        recyclerMenu.setLayoutManager(layoutManager);
+        recyclerMenu.setLayoutManager(new GridLayoutManager(this, 2));
 
 
         final View.OnClickListener onClickListener = new View.OnClickListener() {

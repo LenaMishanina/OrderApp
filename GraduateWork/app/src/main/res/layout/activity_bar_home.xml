@@ -6,11 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".Home">
     <com.google.android.material.appbar.AppBarLayout
+        android:background="@color/teal_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <androidx.appcompat.widget.Toolbar
             android:id="@+id/toolbar"
+            app:titleTextColor="@color/white"
+            app:subtitleTextColor="@color/white"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"/>
         
