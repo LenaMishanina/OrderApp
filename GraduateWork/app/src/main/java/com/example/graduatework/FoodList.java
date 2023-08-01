@@ -10,11 +10,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.example.graduatework.adapter.MyAdapterFood;
 import com.example.graduatework.database.Category;
+import com.example.graduatework.database.Database;
 import com.example.graduatework.database.Food;
+import com.example.graduatework.database.Order;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -34,8 +37,9 @@ public class FoodList extends AppCompatActivity {
 
     String categoryId = "";
 
+    ImageView btnCart;
 
-
+    @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +62,9 @@ public class FoodList extends AppCompatActivity {
         recyclerFood.setHasFixedSize(true);
         layoutManager=new LinearLayoutManager(this);
         recyclerFood.setLayoutManager(layoutManager);
+
+
+
 
 
 
@@ -101,10 +108,62 @@ public class FoodList extends AppCompatActivity {
         };
 
 
+//
+//        //btn add cart quick
+//        btnCart=(ImageView)findViewById(R.id.btn_add_to_cart_quick);
+//        btnCart.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                int itemPosition = recyclerFood.getChildLayoutPosition(v);
+//                Food item = foodList.get(itemPosition);
+////                    Toast.makeText(FoodList.this, "FOOD"+ item.getName(), Toast.LENGTH_SHORT).show();
+//
+//                Log.v("FOOD NAME CLICK", item.getName());
+//
+//                database.orderByChild("Name").equalTo(item.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                        Log.v("I_M_HERE", "I M HERE");
+//                        //     Log.v("GET_KEY", snapshot.child(item.getName()).getRef().getKey());
+//
+//                        String key = "no(";
+//
+//                        for(DataSnapshot childSnapshot : snapshot.getChildren()){
+//                            Log.v("GET_KEY", childSnapshot.getKey());
+//                            key = childSnapshot.getKey();
+//                            Toast.makeText(FoodList.this, childSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+//                            Log.v("KEY FOOD in for", key);
+//                        }
+//                        new Database(getBaseContext()).addToCart(new Order(
+//                                key,
+//                                item.getName(),
+//                                "1",
+//                                item.getPrice(),
+//                                item.getAmount()
+//                        ));
+//
+//                        Toast.makeText(FoodList.this, "Added to Cart " + item.getName(), Toast.LENGTH_SHORT).show();
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
+//
+//
+//
+//            }
+//        });
+
+
+
 
         foodList = new ArrayList<>();
         myAdapterFood=new MyAdapterFood(this,foodList,onClickListener);
         recyclerFood.setAdapter(myAdapterFood);
+
 
 
         //get data
