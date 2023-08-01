@@ -45,10 +45,13 @@ package com.example.graduatework;
         import android.annotation.SuppressLint;
         import android.content.Intent;
         import android.os.Bundle;
+
+        import com.andremion.counterfab.CounterFab;
         import com.example.graduatework.Common.Common;
         import com.example.graduatework.Common.ItemClickListener;
         import com.example.graduatework.adapter.MyAdapterMenu;
         import com.example.graduatework.database.Category;
+        import com.example.graduatework.database.Database;
         import com.example.graduatework.viewHolder.MenuViewHolder;
         import com.firebase.ui.database.FirebaseRecyclerOptions;
         import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -95,7 +98,7 @@ package com.example.graduatework;
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     DatabaseReference database;
-
+    CounterFab fab;
     TextView tvFullName;
 
     RecyclerView recyclerMenu;
@@ -118,7 +121,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
         database = FirebaseDatabase.getInstance().getReference("Category");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (CounterFab) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -127,6 +130,10 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
             }
         });
+
+        fab.setCount(new Database(this).getCountCart());
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openNav, R.string.closeNav);
@@ -214,6 +221,11 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        fab.setCount(new Database(this).getCountCart());
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
