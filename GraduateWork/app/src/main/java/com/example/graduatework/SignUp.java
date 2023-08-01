@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.graduatework.database.User;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -18,16 +19,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class SignUp extends AppCompatActivity {
-    TextView edtPhone, edtName, edtPassword;
+    TextInputEditText edtPhone, edtName, edtPassword;
     Button btnSingUp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
-        edtPhone = (TextView) findViewById(R.id.edtPhone);
-        edtName = (TextView) findViewById(R.id.edtName);
-        edtPassword = (TextView) findViewById(R.id.edtPassword);
+        edtPhone = (TextInputEditText) findViewById(R.id.edtPhone);
+        edtName = (TextInputEditText) findViewById(R.id.edtName);
+        edtPassword = (TextInputEditText) findViewById(R.id.edtPassword);
         btnSingUp = (Button) findViewById(R.id.btnSignUp);
 
         //init firebase

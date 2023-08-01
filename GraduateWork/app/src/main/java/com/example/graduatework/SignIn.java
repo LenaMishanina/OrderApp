@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.example.graduatework.Common.Common;
 import com.example.graduatework.database.User;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,7 +26,7 @@ import com.google.firebase.database.ValueEventListener;
 import io.paperdb.Paper;
 
 public class SignIn extends AppCompatActivity {
-    TextView edtPhone, edtPassword;
+    TextInputEditText edtPhone, edtPassword;
     Button btnSignIn;
     CheckBox checkBox;
 
@@ -33,8 +34,8 @@ public class SignIn extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
-        edtPhone = (TextView) findViewById(R.id.edtPhone);
-        edtPassword = (TextView) findViewById(R.id.edtPassword);
+        edtPhone = (TextInputEditText) findViewById(R.id.edtPhone);
+        edtPassword = (TextInputEditText) findViewById(R.id.edtPassword);
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
         checkBox = (CheckBox) findViewById(R.id.cb_rem_me);
 

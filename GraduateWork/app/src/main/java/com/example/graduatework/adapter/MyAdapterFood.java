@@ -44,6 +44,7 @@ public class MyAdapterFood extends RecyclerView.Adapter<MyAdapterFood.ViewHolder
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Food food = list.get(position);
         holder.foodName.setText(food.getName());
+        holder.foodPrice.setText(food.getPrice());
         Glide.with(context).load(food.getImage()).into(holder.foodImage);
     }
 
@@ -54,13 +55,14 @@ public class MyAdapterFood extends RecyclerView.Adapter<MyAdapterFood.ViewHolder
 
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        TextView foodName;
+        TextView foodName, foodPrice;
         ImageView foodImage;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
             foodName = (TextView) itemView.findViewById(R.id.foodName);
+            foodPrice = (TextView) itemView.findViewById(R.id.foodPrice);
             foodImage = (ImageView) itemView.findViewById(R.id.foodImage);
         }
     }

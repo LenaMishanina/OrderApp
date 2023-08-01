@@ -13,22 +13,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
-        <TextView
-            android:id="@+id/edtPhone"
-            android:hint="@string/hintNumber"
-            android:text="0988123344"
-            android:textSize="34sp"
-            android:inputType="phone"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:hint="@string/so_phone"
+            app:startIconDrawable="@drawable/ic_baseline_phone_24"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-        <TextView
-            android:id="@+id/edtPassword"
+            app:endIconMode="clear_text"
+            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtPhone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="@string/hintPass"
-            android:text="1234"
-            android:textSize="34sp"
-            android:inputType="textPassword"
+            app:startIconDrawable="@drawable/ic_baseline_lock_24"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            app:endIconMode="password_toggle"
+            android:layout_marginBottom="15dp"
+            android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edtPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
         <CheckBox
             android:id="@+id/cb_rem_me"

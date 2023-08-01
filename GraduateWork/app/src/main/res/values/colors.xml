@@ -10,4 +10,5 @@
     <color name="red">#FF0000</color>
     <color name="teal_background">#b8d7d5</color>
     <color name="teal_menu">#127973</color>
+    <color name="font_teal_price">#147b75</color>
 </resources>
