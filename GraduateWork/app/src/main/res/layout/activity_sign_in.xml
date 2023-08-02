@@ -35,7 +35,9 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/edtPhone"
+                android:id="@+id/edtPhoneSignIn"
+                android:maxLength="18"
+android:inputType="phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 

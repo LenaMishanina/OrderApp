@@ -10,8 +10,11 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,6 +35,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Cart extends AppCompatActivity {
 
@@ -85,6 +89,45 @@ public class Cart extends AppCompatActivity {
 
     }
 
+
+    private void setMaskPhone(TextInputEditText edt) {
+
+        if ( edt.getText().length() == 1 && !Objects.equals(edt.getText().toString(), "8") && !Objects.equals(edt.getText().toString(), "+") && !TextUtils.isEmpty(edt.getText())  ){
+            edt.getText().clear();
+        } else if (edt.getText().length() == 2 && !Objects.equals(edt.getText().toString(), "+7") && !TextUtils.isEmpty(edt.getText())){
+            edt.getText().clear();
+        } else {
+
+            if (Objects.equals(edt.getText().toString(), "8")) {
+                edt.setText("+7 (");
+                edt.setSelection(edt.getText().length());
+            }
+            if (Objects.equals(edt.getText().toString(), "+7")) {
+                edt.setText(edt.getText().toString() + " (");
+                edt.setSelection(edt.getText().length());
+            }
+            if (edt.getText().length() >= 4 && Objects.equals(edt.getText().subSequence(0, 4).toString(), "+7 (")) {
+                if (edt.getText().length() == 7) {
+                    edt.setText(edt.getText().toString() + ") ");
+                    edt.setSelection(edt.getText().length());
+                }
+                if (edt.getText().length() == 12) {
+                    edt.setText(edt.getText().toString() + "-");
+                    edt.setSelection(edt.getText().length());
+                }
+                if (edt.getText().length() == 15) {
+                    edt.setText(edt.getText().toString() + "-");
+                    edt.setSelection(edt.getText().length());
+                }
+            }
+        }
+
+
+    }
+
+
+
+
     @SuppressLint("NonConstantResourceId")
     public void checkRadioBtn(View v){
 //        int radioId=radioGroup.getCheckedRadioButtonId();
@@ -121,6 +164,50 @@ public class Cart extends AppCompatActivity {
         radioGroup = (RadioGroup) SetOrder.findViewById(R.id.radio_group);
         radioBtnCash = (RadioButton) SetOrder.findViewById(R.id.radio_cash);
         radioBtnCashless = (RadioButton) SetOrder.findViewById(R.id.radio_cashless);
+
+
+        edtPhone.setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+
+                if (keyCode != KeyEvent.KEYCODE_DEL) {
+
+                    edtPhone.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                        }
+
+                        @SuppressLint("SetTextI18n")
+                        @Override
+                        public void afterTextChanged(Editable editable) {
+
+                            setMaskPhone(edtPhone);
+
+                        }
+                    });
+
+                }
+                else{
+                    edtPhone.setSelection(edtPhone.getText().length());
+                    if (edtPhone.getText().length() == 16 || edtPhone.getText().length() == 13)
+                        edtPhone.setText(edtPhone.getText().subSequence(0, edtPhone.getText().length()-2));
+                    else if (edtPhone.getText().length() == 9)
+                        edtPhone.setText(edtPhone.getText().subSequence(0, edtPhone.getText().length()-3));
+                    else if (edtPhone.getText().length() == 4 || edtPhone.getText().length() == 3)
+                        edtPhone.getText().clear();
+                }
+
+                edtPhone.setSelection(edtPhone.getText().length());
+                return false;
+            }
+        });
+
+
 
 
         edtName.setText(Common.currentUser.getName());
