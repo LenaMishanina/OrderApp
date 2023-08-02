@@ -18,6 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="100dp">
         <RelativeLayout
+            android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <LinearLayout
@@ -49,11 +50,14 @@
             <Button
                 android:id="@+id/btnPlaceOrder"
                 android:text="@string/placeOrder"
+                android:backgroundTint="@color/blue_btn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_margin="15dp"
-                android:shadowColor="@color/black"/>
+                android:shadowColor="@color/black"
+                android:textAllCaps="false"
+                android:textColor="@color/beige_card"/>
         </RelativeLayout>
 
 

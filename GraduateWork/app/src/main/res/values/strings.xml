@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">New York</string>
-    <string name="btn_registr">Зарегестрироваться</string>
-    <string name="btn_login">Войти</string>
+    <string name="btn_registr">Регистрация</string>
+    <string name="btn_login">Вход</string>
+
+    <string name="btnSigIn">Войти</string>
+    <string name="btnSignUp">Зарегистрироваться</string>
+    <string name="alreadySignUp">Уже есть аккаунт</string>
+
     <string name="hintNumber">Номер телефона</string>
     <string name="hintPass">Пароль</string>
     <string name="hintName">Имя</string>
@@ -12,7 +17,7 @@
     <string name="so">Оформление заказа</string>
     <string name="so_phone">Телефон</string>
     <string name="so_name">Имя</string>
-    <string name="so_address">Адресс</string>
+    <string name="so_address">Адрес</string>
     <string name="so_payment_option">Способ оплаты</string>
     <string name="so_nal">Наличные</string>
     <string name="so_beznal">Безналичные</string>

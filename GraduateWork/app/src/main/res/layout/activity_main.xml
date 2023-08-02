@@ -28,6 +28,8 @@
         <Button
             android:id="@+id/btnSignUp"
             android:text="@string/btn_registr"
+            android:backgroundTint="@color/blue_btn"
+            android:textColor="@color/beige_card"
             android:layout_weight="1"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -35,6 +37,8 @@
             android:shadowColor="@color/black"/>
         <Button
             android:id="@+id/btnSignIn"
+            android:backgroundTint="@color/blue_btn"
+            android:textColor="@color/beige_card"
             android:text="@string/btn_login"
             android:layout_weight="1"
             android:layout_width="0dp"

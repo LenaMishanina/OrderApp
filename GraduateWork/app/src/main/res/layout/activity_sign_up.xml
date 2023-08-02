@@ -3,8 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/teal_background"
     android:layout_height="match_parent"
     tools:context=".SignUp">
+
+    <TextView
+        android:layout_marginTop="150dp"
+        android:gravity="center"
+        android:text="@string/btn_registr"
+        android:textSize="40sp"
+        android:textColor="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:layout_centerInParent="true"
@@ -15,11 +25,13 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInpLayoutPhoneReg"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="@string/so_phone"
             app:startIconDrawable="@drawable/ic_baseline_phone_24"
             android:layout_width="match_parent"
             app:endIconMode="clear_text"
+            app:helperTextTextColor="@color/red"
             android:layout_marginBottom="15dp"
             android:layout_height="wrap_content">
             <com.google.android.material.textfield.TextInputEditText
@@ -29,7 +41,9 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInpLayoutNameReg"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            app:helperTextTextColor="@color/red"
             android:hint="@string/so_name"
             app:startIconDrawable="@drawable/ic_baseline_person_24"
             android:layout_width="match_parent"
@@ -42,8 +56,10 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInpLayoutPwdReg"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="@string/hintPass"
+            app:helperTextTextColor="@color/red"
             app:startIconDrawable="@drawable/ic_baseline_lock_24"
             android:layout_width="match_parent"
             app:endIconMode="password_toggle"
@@ -54,11 +70,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:id="@+id/txtAlreadyLogin"
+            android:textSize="15sp"
+            android:textColor="@color/blue_btn"
+            android:text="@string/alreadySignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
     <Button
         android:id="@+id/btnSignUp"
-        android:text="@string/btn_registr"
+        android:text="@string/btnSignUp"
+        android:backgroundTint="@color/blue_btn"
+        android:textColor="@color/beige_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

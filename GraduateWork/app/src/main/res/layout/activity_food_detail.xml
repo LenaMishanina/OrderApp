@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/teal_background"
     tools:context=".FoodDetail">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -14,6 +15,7 @@
         android:fitsSystemWindows="true">
         <com.google.android.material.appbar.CollapsingToolbarLayout
             android:id="@+id/collapsing"
+            android:background="@color/teal_background"
             android:layout_width="match_parent"
             android:layout_height="350dp"
             android:fitsSystemWindows="true"

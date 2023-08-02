@@ -3,8 +3,18 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="@color/teal_background"
     android:layout_height="match_parent"
     tools:context=".SignIn">
+
+    <TextView
+        android:layout_marginTop="150dp"
+        android:text="@string/btn_login"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="40sp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <LinearLayout
         android:orientation="vertical"
@@ -14,8 +24,10 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
         <com.google.android.material.textfield.TextInputLayout
+          android:id="@+id/txtInpLayoutPhone"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="@string/so_phone"
+            app:helperTextTextColor="@color/red"
             app:startIconDrawable="@drawable/ic_baseline_phone_24"
             android:layout_width="match_parent"
             app:endIconMode="clear_text"
@@ -30,9 +42,11 @@
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/txtInpLayoutPwd"
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:hint="@string/hintPass"
             app:startIconDrawable="@drawable/ic_baseline_lock_24"
+            app:helperTextTextColor="@color/red"
             android:layout_width="match_parent"
             app:endIconMode="password_toggle"
             android:layout_marginBottom="15dp"
@@ -43,18 +57,36 @@
                 android:layout_height="wrap_content"/>
         </com.google.android.material.textfield.TextInputLayout>
 
-        <CheckBox
-            android:id="@+id/cb_rem_me"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/remember_me"
-            android:gravity="center_vertical"/>
+            android:orientation="horizontal"
+            android:weightSum="2">
+            <CheckBox
+                android:id="@+id/cb_rem_me"
+                android:layout_weight="1.8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remember_me" />
+
+            <TextView
+                android:id="@+id/txtToRegistration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.2"
+                android:gravity="right"
+                android:text="@string/btn_registr"
+                android:textColor="@color/blue_btn"
+                android:textSize="15sp" />
+        </LinearLayout>
 
     </LinearLayout>
 
     <Button
         android:id="@+id/btnSignIn"
-        android:text="@string/btn_login"
+        android:text="@string/btnSigIn"
+        android:backgroundTint="@color/blue_btn"
+        android:textColor="@color/beige_card"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
