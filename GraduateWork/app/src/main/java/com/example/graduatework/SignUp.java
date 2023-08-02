@@ -68,7 +68,7 @@ public class SignUp extends AppCompatActivity {
                         if (!TextUtils.isEmpty(edtPassword.getText())) {
 
                             final ProgressDialog mDialog = new ProgressDialog(SignUp.this);
-                            mDialog.setMessage("Please waiting...");
+                            mDialog.setMessage("Пожалуйста, подождите...");
                             mDialog.show();
 
                             table_user.addValueEventListener(new ValueEventListener() {
