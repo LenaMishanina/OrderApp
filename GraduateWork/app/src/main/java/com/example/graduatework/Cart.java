@@ -39,7 +39,7 @@ public class Cart extends AppCompatActivity {
     RecyclerView.LayoutManager layoutManager;
     DatabaseReference database;
 
-    TextView txtTotalPrice;
+    public TextView txtTotalPrice;
     Button btnPlaceOrder;
 
     List<Order> cart = new ArrayList<>();

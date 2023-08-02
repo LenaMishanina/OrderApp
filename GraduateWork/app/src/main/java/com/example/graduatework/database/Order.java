@@ -1,6 +1,7 @@
 package com.example.graduatework.database;
 
 public class Order {
+    private int ID;
     private String ProductId,ProductName, Quantity, Price, Amount;
 
     public Order(){}
@@ -11,6 +12,23 @@ public class Order {
         Quantity = quantity;
         Price = price;
         Amount = amount;
+    }
+
+    public Order(int ID, String productId, String productName, String quantity, String price, String amount) {
+        this.ID = ID;
+        ProductId = productId;
+        ProductName = productName;
+        Quantity = quantity;
+        Price = price;
+        Amount = amount;
+    }
+
+    public int getID() {
+        return ID;
+    }
+
+    public void setID(int ID) {
+        this.ID = ID;
     }
 
     public String getProductId() {
