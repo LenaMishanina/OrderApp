@@ -122,7 +122,8 @@ public class FoodDetail extends AppCompatActivity {
                         food.getName(),
                         String.valueOf(totalItemCount),
                         String.valueOf(totalPrice),
-                        food.getAmount()
+                        food.getAmount(),
+                        food.getImage()
                 ));
 
                 Toast.makeText(FoodDetail.this, "Added to Cart " + food.getName(), Toast.LENGTH_SHORT).show();

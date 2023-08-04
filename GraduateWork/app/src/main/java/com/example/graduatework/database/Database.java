@@ -14,7 +14,7 @@ import java.util.List;
 public class Database extends SQLiteAssetHelper {
 
     private static final String DB_NAME = "NewYorkCafeBar.db";
-    private static final int DB_VER = 1;
+    private static final int DB_VER = 2; // 1 - without image cart
     public Database(Context context) {
         super(context, DB_NAME, null, DB_VER);
     }
@@ -24,7 +24,7 @@ public class Database extends SQLiteAssetHelper {
         SQLiteDatabase db = getReadableDatabase();
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
 
-        String[] sqlSelect = {"ID","ProductId", "ProductName", "Quantity", "Price", "Amount"};
+        String[] sqlSelect = {"ID","ProductId", "ProductName", "Quantity", "Price", "Amount", "Image"};
         String sqlTable = "OrderDetail";
 
         qb.setTables(sqlTable);
@@ -40,7 +40,8 @@ public class Database extends SQLiteAssetHelper {
                         c.getString(c.getColumnIndex("ProductName")),
                         c.getString(c.getColumnIndex("Quantity")),
                         c.getString(c.getColumnIndex("Price")),
-                        c.getString(c.getColumnIndex("Amount"))
+                        c.getString(c.getColumnIndex("Amount")),
+                        c.getString(c.getColumnIndex("Image"))
                 ));
             } while (c.moveToNext());
         }
@@ -51,12 +52,13 @@ public class Database extends SQLiteAssetHelper {
 
     public void addToCart(Order order){
         SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("INSERT into OrderDetail(ProductId,ProductName,Quantity,Price,Amount) VALUES('%s','%s','%s','%s','%s');",
+        String query = String.format("INSERT into OrderDetail(ProductId,ProductName,Quantity,Price,Amount,Image) VALUES('%s','%s','%s','%s','%s','%s');",
                 order.getProductId(),
                 order.getProductName(),
                 order.getQuantity(),
                 order.getPrice(),
-                order.getAmount());
+                order.getAmount(),
+                order.getImage());
         db.execSQL(query);
     }
 

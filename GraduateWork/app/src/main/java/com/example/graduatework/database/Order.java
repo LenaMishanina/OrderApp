@@ -2,25 +2,35 @@ package com.example.graduatework.database;
 
 public class Order {
     private int ID;
-    private String ProductId,ProductName, Quantity, Price, Amount;
+    private String ProductId,ProductName, Quantity, Price, Amount, Image;
 
     public Order(){}
 
-    public Order(String productId, String productName, String quantity, String price, String amount) {
+    public Order(String productId, String productName, String quantity, String price, String amount,String image) {
         ProductId = productId;
         ProductName = productName;
         Quantity = quantity;
         Price = price;
         Amount = amount;
+        Image = image;
     }
 
-    public Order(int ID, String productId, String productName, String quantity, String price, String amount) {
+    public Order(int ID, String productId, String productName, String quantity, String price, String amount, String image) {
         this.ID = ID;
         ProductId = productId;
         ProductName = productName;
         Quantity = quantity;
         Price = price;
         Amount = amount;
+        Image = image;
+    }
+
+    public String getImage() {
+        return Image;
+    }
+
+    public void setImage(String image) {
+        Image = image;
     }
 
     public int getID() {

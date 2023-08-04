@@ -19,6 +19,7 @@ import com.example.graduatework.Common.ItemClickListener;
 import com.example.graduatework.R;
 import com.example.graduatework.database.Database;
 import com.example.graduatework.database.Order;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnCreateContextMenuListener{
 
     public TextView txt_cart_name, txt_cart_price, txt_cart_count;
-    public ImageView btnAdd, btnRemove;
+    public ImageView btnAdd, btnRemove, cart_image;
     private ItemClickListener itemClickListener;
 
 
@@ -42,6 +43,7 @@ class CartViewHolder extends RecyclerView.ViewHolder implements View.OnClickList
         txt_cart_count = (TextView) itemView.findViewById(R.id.cart_item_count);
         btnAdd = (ImageView) itemView.findViewById(R.id.btn_add_item_cart);
         btnRemove = (ImageView) itemView.findViewById(R.id.btn_remove_item_cart);
+        cart_image = (ImageView) itemView.findViewById(R.id.cartImage);
         itemView.setOnCreateContextMenuListener(this);
     }
 
@@ -83,6 +85,7 @@ public class MyAdapterCart extends RecyclerView.Adapter<CartViewHolder> {
 
         holder.txt_cart_name.setText(order.getProductName());
 
+        Picasso.with(context.getBaseContext()).load(listData.get(position).getImage()).resize(70,70).centerCrop().into(holder.cart_image);
 
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
