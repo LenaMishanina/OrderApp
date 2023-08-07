@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.graduatework.Common.Common;
+import com.example.graduatework.database.Database;
 import com.example.graduatework.database.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -89,6 +90,9 @@ public class SignUp extends AppCompatActivity {
                                         User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), edtPhone.getText().toString());
                                         table_user.child(edtPhone.getText().toString()).setValue(user);//create new user
                                         Toast.makeText(SignUp.this, "Sign Up succeed", Toast.LENGTH_SHORT).show();
+
+                                        new Database(getBaseContext()).cleanCart();
+
                                         Intent intent = new Intent(SignUp.this, Home.class);
                                         Common.currentUser = user;
                                         startActivity(intent);

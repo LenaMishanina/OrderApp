@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.graduatework.Common.Common;
+import com.example.graduatework.database.Database;
 import com.example.graduatework.database.User;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
@@ -143,6 +144,8 @@ public class SignIn extends AppCompatActivity {
                                     User user = dataSnapshot.child(edtPhone.getText().toString()).getValue(User.class);//get user
                                     user.setPhone(edtPhone.getText().toString());
                                     if (user.getPassword().equals(edtPassword.getText().toString())) {
+
+                                        new Database(getBaseContext()).cleanCart();
 
                                         Intent home = new Intent(SignIn.this, Home.class);
                                         Common.currentUser = user;
