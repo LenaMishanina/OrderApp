@@ -67,24 +67,24 @@ public class Database extends SQLiteAssetHelper {
         String query = String.format("DELETE FROM OrderDetail");
         db.execSQL(query);
     }
-
-    public int getCountCart() {
-        int count=0;
-
-        SQLiteDatabase db = getReadableDatabase();
-        String query = String.format("SELECT COUNT(*) FROM OrderDetail");
-//        String query = String.format("SELECT Quantity FROM OrderDetail");
-        Cursor cursor = db.rawQuery(query,null);
-
-        if (cursor.moveToFirst()){
-            do{
-                count=cursor.getInt(0);
-            }while (cursor.moveToNext());
-        }
-
-        return count;
-    }
-
+//
+//    public int getCountCart() {
+//        int count=0;
+//
+//        SQLiteDatabase db = getReadableDatabase();
+//        String query = String.format("SELECT COUNT(*) FROM OrderDetail");
+////        String query = String.format("SELECT Quantity FROM OrderDetail");
+//        Cursor cursor = db.rawQuery(query,null);
+//
+//        if (cursor.moveToFirst()){
+//            do{
+//                count=cursor.getInt(0);
+//            }while (cursor.moveToNext());
+//        }
+//
+//        return count;
+//    }
+//
     public void updateCart(Order order) {
         SQLiteDatabase db = getReadableDatabase();
         String query = String.format("UPDATE OrderDetail SET Quantity= %s WHERE ID = %d", order.getQuantity(), order.getID());

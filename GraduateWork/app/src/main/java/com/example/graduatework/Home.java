@@ -92,6 +92,7 @@ package com.example.graduatework;
         import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 
         import java.util.ArrayList;
+        import java.util.List;
 
         import io.paperdb.Paper;
 
@@ -107,6 +108,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     MyAdapterMenu myAdapterMenu;
     ArrayList<Category> categoryList;
+
+    List<Order> cart = new ArrayList<>();
+    int counter_fab;
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -132,7 +136,20 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             }
         });
 
-        fab.setCount(new Database(this).getCountCart());
+//        fab.setCount(new Database(this).getCountCart());
+        //SET FAB COUNTER
+//        cart = new Database(this).getCarts();
+//        Log.v("SIZE_CART", String.valueOf(cart.size()));
+//        int counter_fab = 0;
+//        for (Order order : cart) {
+//            Log.v("ORDER_QUANTITY", order.getQuantity());
+//            counter_fab += Integer.parseInt(order.getQuantity());
+//        }
+//        Log.v("FAB_ COUNTER", String.valueOf(counter_fab));
+//        fab.setCount(counter_fab);
+        setCounterFab();
+
+
 
 
 
@@ -222,10 +239,24 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
 
     }
 
+    private void setCounterFab(){
+        cart = new Database(this).getCarts();
+        Log.v("SIZE_CART", String.valueOf(cart.size()));
+        counter_fab=0;
+        for (Order order : cart) {
+            Log.v("ORDER_QUANTITY", order.getQuantity());
+            counter_fab += Integer.parseInt(order.getQuantity());
+        }
+        Log.v("FAB_ COUNTER", String.valueOf(counter_fab));
+        fab.setCount(counter_fab);
+        cart.clear();
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
-        fab.setCount(new Database(this).getCountCart());
+//        fab.setCount(new Database(this).getCountCart());
+        setCounterFab();
     }
 
     @SuppressWarnings("StatementWithEmptyBody")
