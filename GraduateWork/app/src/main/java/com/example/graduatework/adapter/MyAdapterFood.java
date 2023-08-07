@@ -84,7 +84,8 @@ public class MyAdapterFood extends RecyclerView.Adapter<MyAdapterFood.ViewHolder
                                 food.getName(),
                                 "1",
                                 food.getPrice(),
-                                food.getAmount()
+                                food.getAmount(),
+                                food.getImage()
                         ));
 
                         Toast.makeText(v.getContext(), "Added to Cart " + food.getName(), Toast.LENGTH_SHORT).show();

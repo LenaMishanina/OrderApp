@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.graduatework.Common.Common;
 import com.example.graduatework.database.User;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -85,10 +86,11 @@ public class SignUp extends AppCompatActivity {
                                         Toast.makeText(SignUp.this, "phone number already register", Toast.LENGTH_SHORT).show();
                                     } else {
                                         mDialog.dismiss();
-                                        User user = new User(edtName.getText().toString(), edtPassword.getText().toString());
+                                        User user = new User(edtName.getText().toString(), edtPassword.getText().toString(), edtPhone.getText().toString());
                                         table_user.child(edtPhone.getText().toString()).setValue(user);//create new user
                                         Toast.makeText(SignUp.this, "Sign Up succeed", Toast.LENGTH_SHORT).show();
                                         Intent intent = new Intent(SignUp.this, Home.class);
+                                        Common.currentUser = user;
                                         startActivity(intent);
                                         //finish();
                                     }

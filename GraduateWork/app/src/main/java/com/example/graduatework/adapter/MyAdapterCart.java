@@ -3,6 +3,7 @@ package com.example.graduatework.adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -80,8 +81,8 @@ public class MyAdapterCart extends RecyclerView.Adapter<CartViewHolder> {
         Order order = listData.get(position);
         holder.txt_cart_count.setText(order.getQuantity());
 
-//        int total_price = (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
-      //  holder.txt_cart_price.setText(String.valueOf(total_price));
+        int cur_price = (Integer.parseInt(order.getPrice())) * (Integer.parseInt(order.getQuantity()));
+        holder.txt_cart_price.setText(String.valueOf(cur_price));
 
         holder.txt_cart_name.setText(order.getProductName());
 
@@ -109,6 +110,7 @@ public class MyAdapterCart extends RecyclerView.Adapter<CartViewHolder> {
                 }
             }
         });
+
         holder.btnRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
