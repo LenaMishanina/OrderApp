@@ -55,11 +55,11 @@ public class Cart extends AppCompatActivity {
     RadioButton radioBtnCash, radioBtnCashless;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_cart);
+
 
         database = FirebaseDatabase.getInstance().getReference("Requests");
 
@@ -124,9 +124,6 @@ public class Cart extends AppCompatActivity {
 
 
     }
-
-
-
 
     @SuppressLint("NonConstantResourceId")
     public void checkRadioBtn(View v){

@@ -52,6 +52,7 @@ package com.example.graduatework;
         import com.example.graduatework.adapter.MyAdapterMenu;
         import com.example.graduatework.database.Category;
         import com.example.graduatework.database.Database;
+        import com.example.graduatework.database.Order;
         import com.example.graduatework.viewHolder.MenuViewHolder;
         import com.firebase.ui.database.FirebaseRecyclerOptions;
         import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -241,6 +242,9 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
             startActivity(intent);
 
         }else if(id == R.id.nav_logout){
+
+            new Database(getBaseContext()).cleanCart();
+
             //delete data about user
             Paper.book().destroy();
 
@@ -254,6 +258,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onBackPressed(){
