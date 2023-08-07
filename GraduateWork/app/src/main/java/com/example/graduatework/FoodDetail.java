@@ -3,6 +3,7 @@ package com.example.graduatework;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -22,6 +23,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class FoodDetail extends AppCompatActivity {
     TextView foodName_det, foodPrice_det, foodAmount_det, foodDesc_det;
     ImageView foodImage_det;
@@ -39,6 +43,10 @@ public class FoodDetail extends AppCompatActivity {
     String foodId = "";
 
     DatabaseReference database;
+
+
+
+    List<Order> cart = new ArrayList<>();
 
 
     @Override
@@ -117,16 +125,33 @@ public class FoodDetail extends AppCompatActivity {
         btnCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new Database(getBaseContext()).addToCart(new Order(
-                        foodId,
-                        food.getName(),
-                        String.valueOf(totalItemCount),
-                        String.valueOf(totalPrice),
-                        food.getAmount(),
-                        food.getImage()
-                ));
+                // в корзину если уже добавлено и создавать если не добавлено
+                cart = new Database(getBaseContext()).getCarts();
+                int counter = 0;
+                for (Order order : cart) {
+                    if (order.getProductName().equals(food.getName().toString())){
+                        counter++;
+                    }
+                }
 
-                Toast.makeText(FoodDetail.this, "Added to Cart " + food.getName(), Toast.LENGTH_SHORT).show();
+                if (counter > 0){
+                    Intent intent = new Intent(FoodDetail.this, Cart.class);
+                    startActivity(intent);
+                } else {
+
+
+                    new Database(getBaseContext()).addToCart(new Order(
+                            foodId,
+                            food.getName(),
+                            String.valueOf(totalItemCount),
+                            String.valueOf(totalPrice),
+                            food.getAmount(),
+                            food.getImage()
+                    ));
+
+                    Toast.makeText(FoodDetail.this, "Added to Cart " + food.getName(), Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 

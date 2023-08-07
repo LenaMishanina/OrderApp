@@ -1,6 +1,7 @@
 package com.example.graduatework.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,6 +14,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.graduatework.Cart;
+import com.example.graduatework.Common.Common;
+import com.example.graduatework.FoodDetail;
 import com.example.graduatework.FoodList;
 import com.example.graduatework.R;
 import com.example.graduatework.database.Database;
@@ -25,11 +29,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyAdapterFood extends RecyclerView.Adapter<MyAdapterFood.ViewHolder> {
 
     Context context;
     ArrayList<Food> list;
+    List<Order> cart = new ArrayList<>();
 
     final View.OnClickListener onClickListener;
 
@@ -63,42 +69,56 @@ public class MyAdapterFood extends RecyclerView.Adapter<MyAdapterFood.ViewHolder
             @Override
             public void onClick(View v) {
 
+                cart = new Database(v.getContext()).getCarts();
+                int counter = 0;
+                for (Order order : cart) {
+                    if (order.getProductName().equals(food.getName().toString())){
+                        counter++;
+                    }
+                }
+
+                if (counter > 0){
+                    Intent intent = new Intent(context, Cart.class);
+                    context.startActivity(intent);
+                } else {
 
 
-                database.orderByChild("Name").equalTo(food.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        Log.v("I_M_HERE", "I M HERE");
-                        //     Log.v("GET_KEY", snapshot.child(item.getName()).getRef().getKey());
+                    database.orderByChild("Name").equalTo(food.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Log.v("I_M_HERE", "I M HERE");
+                            //     Log.v("GET_KEY", snapshot.child(item.getName()).getRef().getKey());
 
-                        String key = "no(";
+                            String key = "no(";
 
-                        for(DataSnapshot childSnapshot : snapshot.getChildren()){
-                            Log.v("GET_KEY", childSnapshot.getKey());
-                            key = childSnapshot.getKey();
-                            Toast.makeText(v.getContext(), childSnapshot.getKey(), Toast.LENGTH_SHORT).show();
-                            Log.v("KEY FOOD in for", key);
+                            for (DataSnapshot childSnapshot : snapshot.getChildren()) {
+                                Log.v("GET_KEY", childSnapshot.getKey());
+                                key = childSnapshot.getKey();
+                                Toast.makeText(v.getContext(), childSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                                Log.v("KEY FOOD in for", key);
+                            }
+                            new Database(v.getContext()).addToCart(new Order(
+                                    key,
+                                    food.getName(),
+                                    "1",
+                                    food.getPrice(),
+                                    food.getAmount(),
+                                    food.getImage()
+                            ));
+
+                            Toast.makeText(v.getContext(), "Added to Cart " + food.getName(), Toast.LENGTH_SHORT).show();
+
                         }
-                        new Database(v.getContext()).addToCart(new Order(
-                                key,
-                                food.getName(),
-                                "1",
-                                food.getPrice(),
-                                food.getAmount(),
-                                food.getImage()
-                        ));
 
-                        Toast.makeText(v.getContext(), "Added to Cart " + food.getName(), Toast.LENGTH_SHORT).show();
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
+                        }
+                    });
 
 
+
+                }
             }
         });
 
