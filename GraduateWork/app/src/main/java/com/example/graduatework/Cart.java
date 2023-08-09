@@ -19,6 +19,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -29,6 +30,10 @@ import com.example.graduatework.adapter.MyAdapterCart;
 import com.example.graduatework.database.Database;
 import com.example.graduatework.database.Order;
 import com.example.graduatework.database.Request;
+import com.google.android.gms.common.api.Status;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -53,6 +58,8 @@ public class Cart extends AppCompatActivity {
     TextInputEditText edtName, edtPhone, edtAddress, edtComment;
     RadioGroup radioGroup;
     RadioButton radioBtnCash, radioBtnCashless;
+
+    Place shippingAddress;
 
 
     @Override
@@ -156,12 +163,32 @@ public class Cart extends AppCompatActivity {
         @SuppressLint("InflateParams") View SetOrder = inflater.inflate(R.layout.set_order,null);
         edtName = (TextInputEditText) SetOrder.findViewById(R.id.edtNameSO);
         edtPhone = (TextInputEditText) SetOrder.findViewById(R.id.edtPhoneSO);
-        edtAddress = (TextInputEditText) SetOrder.findViewById(R.id.edtAddressSO);
+//        edtAddress = (TextInputEditText) SetOrder.findViewById(R.id.edtAddressSO);
         edtComment = (TextInputEditText) SetOrder.findViewById(R.id.edtCommentSO);
         radioGroup = (RadioGroup) SetOrder.findViewById(R.id.radio_group);
         radioBtnCash = (RadioButton) SetOrder.findViewById(R.id.radio_cash);
         radioBtnCashless = (RadioButton) SetOrder.findViewById(R.id.radio_cashless);
 
+
+
+        //ADDRESS PLACE ADI
+        PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_button).setVisibility(View.GONE);
+        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setHint("Введите адрес");
+        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setTextSize(20);
+        //get address from place
+        edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                shippingAddress=place;
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.v("ERROR", "error in place api");
+//                Log.e("ERROR", status.getStatusMessage().toString());
+            }
+        });
 
         edtPhone.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -205,8 +232,6 @@ public class Cart extends AppCompatActivity {
         });
 
 
-
-
         edtName.setText(Common.currentUser.getName());
         edtPhone.setText(Common.currentUser.getPhone());
 
@@ -214,18 +239,12 @@ public class Cart extends AppCompatActivity {
         alertDialog.setPositiveButton("Оформить заказ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (TextUtils.isEmpty(edtName.getText().toString()) || TextUtils.isEmpty(edtPhone.getText().toString()) || TextUtils.isEmpty(edtAddress.getText().toString())){
-//                    //radio get selected
-//                    int radioId = radioGroup.getCheckedRadioButtonId();
-//                    radioButton = findViewById(radioId);
+                if (TextUtils.isEmpty(edtName.getText().toString()) || TextUtils.isEmpty(edtPhone.getText().toString()) || TextUtils.isEmpty(shippingAddress.getAddress().toString())){
 //                    Log.v("SELECTED RADIO BTN", radioButton.getText().toString());
 //                    Toast.makeText(Cart.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), "Обязательное поле", Toast.LENGTH_SHORT).show();
 
                 } else {
-//                    //radio get selected
-//                    int radioId = radioGroup.getCheckedRadioButtonId();
-//                    radioButton = findViewById(radioId);
                     String selectedRadioBtn = "";
                     if (radioBtnCash.isChecked())
                         selectedRadioBtn = radioBtnCash.getText().toString();
@@ -235,11 +254,12 @@ public class Cart extends AppCompatActivity {
                     Request request = new Request(
                             Common.currentUser.getPhone(),
                             Common.currentUser.getName(),
-                            edtAddress.getText().toString(),
+                            shippingAddress.getAddress().toString(),
                             txtTotalPrice.getText().toString(),
                             "0", //status
                             edtComment.getText().toString(),
                             selectedRadioBtn,
+                            String.format("%s","%s",shippingAddress.getLatLng().latitude,shippingAddress.getLatLng().longitude),
                             cart
                     );
 
@@ -258,6 +278,10 @@ public class Cart extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
+
+                getFragmentManager().beginTransaction()
+                        .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
+                        .commit();
             }
         });
 

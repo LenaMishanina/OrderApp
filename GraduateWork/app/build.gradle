@@ -37,6 +37,11 @@ android {
 
 dependencies {
 
+    //google place api
+    implementation 'com.google.android.gms:play-services-places:17.0.0'
+
+
+
 
     //counter fab
     implementation 'com.github.andremion:counterfab:1.0.1'

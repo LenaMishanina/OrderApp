@@ -3,23 +3,31 @@ package com.example.graduatework.database;
 import java.util.List;
 
 public class Request {
-    private String phone, name, address, total, status, comment, payment_option;
+    private String phone, name, address, total, status, comment, payment_option, latLng;
     private List<Order> orderFoods;
 
     public Request() {
     }
 
-    public Request(String phone, String name, String address, String total, String status, String comment, String payment_option, List<Order> orderFoods) {
+    public Request(String phone, String name, String address, String total, String status, String comment, String payment_option, String latLng, List<Order> orderFoods) {
         this.phone = phone;
         this.name = name;
         this.address = address;
         this.total = total;
-        this.status = status;// 0 - размещен; 1 - доставляется; 2 - доставлен
+        this.status = status; // 0 - размещен; 1 - доставляется; 2 - доставлен
         this.comment = comment;
         this.payment_option = payment_option;
+        this.latLng = latLng;
         this.orderFoods = orderFoods;
     }
 
+    public String getLatLng() {
+        return latLng;
+    }
+
+    public void setLatLng(String latLng) {
+        this.latLng = latLng;
+    }
 
     public void setStatus(String status) {
         this.status = status;
