@@ -18,6 +18,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
@@ -34,11 +35,13 @@ import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -172,23 +175,45 @@ public class Cart extends AppCompatActivity {
 
 
         //ADDRESS PLACE ADI
-        PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+//        PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+        AutocompleteSupportFragment edtAddress = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_button).setVisibility(View.GONE);
         ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setHint("Введите адрес");
         ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setTextSize(20);
-        //get address from place
+//        //get address from place
+//        edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(Place place) {
+//                shippingAddress=place;
+//            }
+//
+//            @Override
+//            public void onError(Status status) {
+//                Log.v("ERROR", "error in place api");
+////                Log.e("ERROR", status.getStatusMessage().toString());
+//            }
+//        });
+//
+
+        // Specify the types of place data to return.
+        edtAddress.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+        // Set up a PlaceSelectionListener to handle the response.
         edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(Place place) {
-                shippingAddress=place;
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("PLACE", "Place: " + place.getName() + ", " + place.getId());
             }
 
+
             @Override
-            public void onError(Status status) {
-                Log.v("ERROR", "error in place api");
-//                Log.e("ERROR", status.getStatusMessage().toString());
+            public void onError(@NonNull Status status) {
+                // TODO: Handle the error.
+                Log.i("ERROR", "An error occurred: " + status);
             }
         });
+
 
         edtPhone.setOnKeyListener(new View.OnKeyListener() {
             @Override
