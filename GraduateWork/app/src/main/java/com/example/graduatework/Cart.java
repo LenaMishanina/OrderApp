@@ -1,5 +1,7 @@
 package com.example.graduatework;
 
+import static com.google.android.gms.common.util.CollectionUtils.listOf;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -32,13 +36,13 @@ import com.example.graduatework.database.Database;
 import com.example.graduatework.database.Order;
 import com.example.graduatework.database.Request;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -81,8 +85,13 @@ public class Cart extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (cart.size() > 0)
-                    showAlertDialog();
+                if (cart.size() > 0) {
+                    try {
+                        showAlertDialog();
+                    } catch (PackageManager.NameNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
                 else
                     Toast.makeText(Cart.this, "Корзина пуста", Toast.LENGTH_SHORT).show();
             }
@@ -155,8 +164,14 @@ public class Cart extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), payment_opt, Toast.LENGTH_SHORT).show();
     }
 
-    @SuppressLint("CutPasteId")
-    private void showAlertDialog() {
+    private void showAlertDialog() throws PackageManager.NameNotFoundException {
+
+        String apiKey = "AIzaSyADW2XTigd2fimOqd3VFX2QXJ-ihLLhE0E";
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
         alertDialog.setTitle("Оформление заказа");
 
@@ -177,9 +192,9 @@ public class Cart extends AppCompatActivity {
         //ADDRESS PLACE ADI
 //        PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
         AutocompleteSupportFragment edtAddress = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_button).setVisibility(View.GONE);
-        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setHint("Введите адрес");
-        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setTextSize(20);
+//        edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_button).setVisibility(View.GONE);
+//        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setHint("Введите адрес");
+//        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setTextSize(20);
 //        //get address from place
 //        edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
 //            @Override
@@ -195,22 +210,33 @@ public class Cart extends AppCompatActivity {
 //        });
 //
 
+//        java.util.List<com.google.android.libraries.places.api.model.Place.Field> placeFields = new java.util.List<com.google.android.libraries.places.api.model.Place.Field>;
+//        placeFields.add(0,Place.Field.NAME);
+//        placeFields.add(1,Place.Field.ADDRESS);
+//        placeFields.add(2,Place.Field.PHONE_NUMBER);
+//        placeFields.add(3,Place.Field.LAT_LNG);
+//        placeFields.add(4,Place.Field.OPENING_HOURS);
+//        placeFields.add(5,Place.Field.RATING);
+//        placeFields.add(6,Place.Field.USER_RATINGS_TOTAL);
+
         // Specify the types of place data to return.
+        assert edtAddress != null;
+//        edtAddress.setPlaceFields(placeFields);
         edtAddress.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
 
         // Set up a PlaceSelectionListener to handle the response.
         edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
-            public void onPlaceSelected(@NonNull Place place) {
-                // TODO: Get info about the selected place.
-                Log.i("PLACE", "Place: " + place.getName() + ", " + place.getId());
-            }
-
-
-            @Override
             public void onError(@NonNull Status status) {
                 // TODO: Handle the error.
                 Log.i("ERROR", "An error occurred: " + status);
+            }
+
+            @Override
+            public void onPlaceSelected(@NonNull Place place) {
+                // TODO: Get info about the selected place.
+                Log.i("PLACE", "Place: " + place.getName() + ", " + place.getId());
+
             }
         });
 
