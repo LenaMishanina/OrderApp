@@ -36,13 +36,15 @@ import com.example.graduatework.database.Database;
 import com.example.graduatework.database.Order;
 import com.example.graduatework.database.Request;
 import com.google.android.gms.common.api.Status;
+
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -66,7 +68,7 @@ public class Cart extends AppCompatActivity {
     RadioGroup radioGroup;
     RadioButton radioBtnCash, radioBtnCashless;
 
-    Place shippingAddress;
+//    Place shippingAddress;
 
 
     @Override
@@ -166,10 +168,10 @@ public class Cart extends AppCompatActivity {
 
     private void showAlertDialog() throws PackageManager.NameNotFoundException {
 
-        String apiKey = "AIzaSyADW2XTigd2fimOqd3VFX2QXJ-ihLLhE0E";
-        if (!Places.isInitialized()) {
-            Places.initialize(getApplicationContext(), apiKey);
-        }
+//        String apiKey = "AIzaSyADW2XTigd2fimOqd3VFX2QXJ-ihLLhE0E";
+//        if (!Places.isInitialized()) {
+//            Places.initialize(getApplicationContext(), apiKey);
+//        }
 
 
         AlertDialog.Builder alertDialog = new AlertDialog.Builder(Cart.this);
@@ -181,7 +183,7 @@ public class Cart extends AppCompatActivity {
         @SuppressLint("InflateParams") View SetOrder = inflater.inflate(R.layout.set_order,null);
         edtName = (TextInputEditText) SetOrder.findViewById(R.id.edtNameSO);
         edtPhone = (TextInputEditText) SetOrder.findViewById(R.id.edtPhoneSO);
-//        edtAddress = (TextInputEditText) SetOrder.findViewById(R.id.edtAddressSO);
+        edtAddress = (TextInputEditText) SetOrder.findViewById(R.id.edtAddressSO);
         edtComment = (TextInputEditText) SetOrder.findViewById(R.id.edtCommentSO);
         radioGroup = (RadioGroup) SetOrder.findViewById(R.id.radio_group);
         radioBtnCash = (RadioButton) SetOrder.findViewById(R.id.radio_cash);
@@ -191,7 +193,10 @@ public class Cart extends AppCompatActivity {
 
         //ADDRESS PLACE ADI
 //        PlaceAutocompleteFragment edtAddress = (PlaceAutocompleteFragment) getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
-        AutocompleteSupportFragment edtAddress = (AutocompleteSupportFragment) getSupportFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
+
+//        AutocompleteSupportFragment edtAddress = (AutocompleteSupportFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.place_autocomplete_fragment);
+
 //        edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_button).setVisibility(View.GONE);
 //        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setHint("Введите адрес");
 //        ((EditText) edtAddress.getView().findViewById(com.google.android.gms.location.places.R.id.place_autocomplete_search_input)).setTextSize(20);
@@ -219,26 +224,26 @@ public class Cart extends AppCompatActivity {
 //        placeFields.add(5,Place.Field.RATING);
 //        placeFields.add(6,Place.Field.USER_RATINGS_TOTAL);
 
+
         // Specify the types of place data to return.
-        assert edtAddress != null;
-//        edtAddress.setPlaceFields(placeFields);
-        edtAddress.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+//        assert edtAddress != null;
+//        edtAddress.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
 
         // Set up a PlaceSelectionListener to handle the response.
-        edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onError(@NonNull Status status) {
-                // TODO: Handle the error.
-                Log.i("ERROR", "An error occurred: " + status);
-            }
+//        edtAddress.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onError(@NonNull Status status) {
+//                 TODO: Handle the error.
+//                Log.i("ERROR", "An error occurred: " + status);
+//            }
 
-            @Override
-            public void onPlaceSelected(@NonNull Place place) {
+//            @Override
+//            public void onPlaceSelected(@NonNull Place place) {
                 // TODO: Get info about the selected place.
-                Log.i("PLACE", "Place: " + place.getName() + ", " + place.getId());
-
-            }
-        });
+//                Log.i("PLACE", "Place: " + place.getName() + ", " + place.getId());
+//
+//            }
+//        });
 
 
         edtPhone.setOnKeyListener(new View.OnKeyListener() {
@@ -290,7 +295,7 @@ public class Cart extends AppCompatActivity {
         alertDialog.setPositiveButton("Оформить заказ", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (TextUtils.isEmpty(edtName.getText().toString()) || TextUtils.isEmpty(edtPhone.getText().toString()) || TextUtils.isEmpty(shippingAddress.getAddress().toString())){
+                if (TextUtils.isEmpty(edtName.getText().toString()) || TextUtils.isEmpty(edtPhone.getText().toString()) || TextUtils.isEmpty(edtAddress.getText().toString())){
 //                    Log.v("SELECTED RADIO BTN", radioButton.getText().toString());
 //                    Toast.makeText(Cart.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
                     Toast.makeText(getApplicationContext(), "Обязательное поле", Toast.LENGTH_SHORT).show();
@@ -305,12 +310,12 @@ public class Cart extends AppCompatActivity {
                     Request request = new Request(
                             Common.currentUser.getPhone(),
                             Common.currentUser.getName(),
-                            shippingAddress.getAddress().toString(),
+                            edtAddress.getText().toString(),
                             txtTotalPrice.getText().toString(),
                             "0", //status
                             edtComment.getText().toString(),
                             selectedRadioBtn,
-                            String.format("%s","%s",shippingAddress.getLatLng().latitude,shippingAddress.getLatLng().longitude),
+//                            String.format("%s","%s",shippingAddress.getLatLng().latitude,shippingAddress.getLatLng().longitude),
                             cart
                     );
 
@@ -330,9 +335,9 @@ public class Cart extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 dialog.dismiss();
 
-                getFragmentManager().beginTransaction()
-                        .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
-                        .commit();
+//                getFragmentManager().beginTransaction()
+//                        .remove(getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment))
+//                        .commit();
             }
         });
 
