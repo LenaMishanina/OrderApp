@@ -59,17 +59,17 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:hint="@string/so_address"
                 app:startIconDrawable="@drawable/ic_baseline_home_work_24"
-                app:helperText="улица <Пушкина>, дом <32>, кв <234>, этаж <21> *"
+                app:helperText="@string/required_field"
                 app:helperTextTextColor="@color/red"
                 android:layout_width="match_parent"
                 app:endIconMode="clear_text"
                 android:layout_marginBottom="15dp"
                 android:layout_height="wrap_content">
 
-                <com.google.android.material.textfield.TextInputEditText
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:completionThreshold="0"
                     android:id="@+id/edtAddressSO"
-                    android:inputType="phone"
-                    android:maxLength="18"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
             </com.google.android.material.textfield.TextInputLayout>

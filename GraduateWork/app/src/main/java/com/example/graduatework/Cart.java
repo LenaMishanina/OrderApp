@@ -5,6 +5,7 @@ import static com.google.android.gms.common.util.CollectionUtils.listOf;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatAutoCompleteTextView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,6 +23,7 @@ import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -64,7 +66,8 @@ public class Cart extends AppCompatActivity {
     MyAdapterCart adapter;
 
     //activity_set_order
-    TextInputEditText edtName, edtPhone, edtAddress, edtComment;
+    TextInputEditText edtName, edtPhone, edtComment;
+    AppCompatAutoCompleteTextView edtAddress;
     RadioGroup radioGroup;
     RadioButton radioBtnCash, radioBtnCashless;
 
@@ -183,11 +186,17 @@ public class Cart extends AppCompatActivity {
         @SuppressLint("InflateParams") View SetOrder = inflater.inflate(R.layout.set_order,null);
         edtName = (TextInputEditText) SetOrder.findViewById(R.id.edtNameSO);
         edtPhone = (TextInputEditText) SetOrder.findViewById(R.id.edtPhoneSO);
-        edtAddress = (TextInputEditText) SetOrder.findViewById(R.id.edtAddressSO);
+        edtAddress = (AppCompatAutoCompleteTextView) SetOrder.findViewById(R.id.edtAddressSO);
         edtComment = (TextInputEditText) SetOrder.findViewById(R.id.edtCommentSO);
         radioGroup = (RadioGroup) SetOrder.findViewById(R.id.radio_group);
         radioBtnCash = (RadioButton) SetOrder.findViewById(R.id.radio_cash);
         radioBtnCashless = (RadioButton) SetOrder.findViewById(R.id.radio_cashless);
+
+
+        //ENTER ADDRESS
+        String[] addressList =getResources().getStringArray(R.array.strArrayAddress);
+        ArrayAdapter<String> adapterArray =new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, addressList);
+        edtAddress.setAdapter(adapterArray);
 
 
 
@@ -298,7 +307,8 @@ public class Cart extends AppCompatActivity {
                 if (TextUtils.isEmpty(edtName.getText().toString()) || TextUtils.isEmpty(edtPhone.getText().toString()) || TextUtils.isEmpty(edtAddress.getText().toString())){
 //                    Log.v("SELECTED RADIO BTN", radioButton.getText().toString());
 //                    Toast.makeText(Cart.this, radioButton.getText(), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(getApplicationContext(), "Обязательное поле", Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getApplicationContext(), "Обязательное поле", Toast.LENGTH_SHORT).show();
+                    Log.v("Required", "Обязательное поле");
 
                 } else {
                     String selectedRadioBtn = "";
