@@ -42,25 +42,36 @@
 
 package com.example.graduatework;
 
+        import android.annotation.SuppressLint;
+        import android.content.Intent;
         import android.os.Bundle;
+
+        import com.andremion.counterfab.CounterFab;
         import com.example.graduatework.Common.Common;
         import com.example.graduatework.Common.ItemClickListener;
+        import com.example.graduatework.adapter.MyAdapterMenu;
         import com.example.graduatework.database.Category;
+        import com.example.graduatework.database.Database;
+        import com.example.graduatework.database.Order;
         import com.example.graduatework.viewHolder.MenuViewHolder;
         import com.firebase.ui.database.FirebaseRecyclerOptions;
         import com.google.android.material.floatingactionbutton.FloatingActionButton;
         import com.google.android.material.navigation.NavigationView;
         import com.google.android.material.snackbar.Snackbar;
+        import com.google.firebase.database.DataSnapshot;
+        import com.google.firebase.database.DatabaseError;
         import com.google.firebase.database.DatabaseReference;
         import com.google.firebase.database.FirebaseDatabase;
 
         import com.firebase.ui.database.FirebaseRecyclerAdapter;
         import com.google.firebase.database.Query;
+        import com.google.firebase.database.ValueEventListener;
         import com.squareup.picasso.Picasso;
 
         import androidx.annotation.NonNull;
         import androidx.appcompat.app.ActionBarDrawerToggle;
 
+        import android.util.Log;
         import android.view.LayoutInflater;
         import android.view.Menu;
         import android.view.MenuItem;
@@ -75,44 +86,72 @@ package com.example.graduatework;
         import androidx.core.view.GravityCompat;
         import androidx.drawerlayout.widget.DrawerLayout;
         import androidx.navigation.ui.AppBarConfiguration;
+        import androidx.recyclerview.widget.GridLayoutManager;
         import androidx.recyclerview.widget.LinearLayoutManager;
         import androidx.recyclerview.widget.RecyclerView;
         import androidx.recyclerview.widget.RecyclerView.LayoutManager;
 
+        import java.util.ArrayList;
+        import java.util.List;
+
+        import io.paperdb.Paper;
 
 
 public class Home extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    private AppBarConfiguration appBarConfiguration;
-
-    FirebaseDatabase database;
-    DatabaseReference category;
-
+    DatabaseReference database;
+    CounterFab fab;
     TextView tvFullName;
 
     RecyclerView recyclerMenu;
     RecyclerView.LayoutManager layoutManager;
 
+    MyAdapterMenu myAdapterMenu;
+    ArrayList<Category> categoryList;
+
+    List<Order> cart = new ArrayList<>();
+    int counter_fab;
+
+    @SuppressLint("ResourceAsColor")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
+        Paper.init(this);
+
         Toolbar toolbar=(Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Menu");
+        toolbar.setTitle("Меню");
         setSupportActionBar(toolbar);
 
-        database = FirebaseDatabase.getInstance();
-        category = database.getReference("Category");
+        database = FirebaseDatabase.getInstance().getReference("Category");
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (CounterFab) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+                Intent cartIntent = new Intent(Home.this, Cart.class);
+                startActivity(cartIntent);
+
             }
         });
+
+//        fab.setCount(new Database(this).getCountCart());
+        //SET FAB COUNTER
+//        cart = new Database(this).getCarts();
+//        Log.v("SIZE_CART", String.valueOf(cart.size()));
+//        int counter_fab = 0;
+//        for (Order order : cart) {
+//            Log.v("ORDER_QUANTITY", order.getQuantity());
+//            counter_fab += Integer.parseInt(order.getQuantity());
+//        }
+//        Log.v("FAB_ COUNTER", String.valueOf(counter_fab));
+//        fab.setCount(counter_fab);
+        setCounterFab();
+
+
+
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.openNav, R.string.closeNav);
@@ -131,57 +170,94 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         //menu
         recyclerMenu = (RecyclerView) findViewById(R.id.recycleMenu);
         recyclerMenu.setHasFixedSize(true);
-        layoutManager=new LinearLayoutManager(this);
+//        layoutManager=new LinearLayoutManager(this);
+//        recyclerMenu.setLayoutManager(layoutManager);
+        recyclerMenu.setLayoutManager(new GridLayoutManager(this, 2));
 
 
-        Query query = FirebaseDatabase.getInstance()
-                .getReference()
-                .child("Category");
-        FirebaseRecyclerOptions<Category> options =
-                new FirebaseRecyclerOptions.Builder<Category>()
-                        .setQuery(query, Category.class)
-                        .build();
-
-//        Toast.makeText(Home.this, "load menu 1", Toast.LENGTH_SHORT).show();
-
-        loadMenu(options);
-
-
-
-    }
-
-    private void loadMenu(FirebaseRecyclerOptions<Category> options) {
-  //      Toast.makeText(Home.this, "load menu 2", Toast.LENGTH_SHORT).show();
-
-//        FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter=new FirebaseRecyclerAdapter<Category, MenuViewHolder>(Category.class, MenuViewHolder.class, R.layout.menu_item,  category) {
-        FirebaseRecyclerAdapter<Category, MenuViewHolder> adapter=new FirebaseRecyclerAdapter<Category, MenuViewHolder>(options) {
-
+        final View.OnClickListener onClickListener = new View.OnClickListener() {
             @Override
-            public MenuViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-                View view = LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.menu_item, parent, false);
+            public void onClick(View v) {
+                int itemPosition = recyclerMenu.getChildLayoutPosition(v);
+                Category item = categoryList.get(itemPosition);
+//                Toast.makeText(Home.this, item.getName(), Toast.LENGTH_SHORT).show();
 
-                return new MenuViewHolder(view);
-            }
+                Log.v("CATEGORY NAME CLICK", item.getName());
 
-            @Override
-            protected void onBindViewHolder(@NonNull MenuViewHolder holder, int position, @NonNull Category model) {
-                holder.txtMenuName.setText(model.getName());
-                Picasso.with(getBaseContext()).load(model.getImage()).into(holder.imageView);
-                final Category clickItem = model;
-                holder.setItemClickListener(new ItemClickListener() {
+                database.orderByChild("Name").equalTo(item.getName()).addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
-                    public void onClick(View view, int position, boolean isLongClick) {
-                        Toast.makeText(Home.this, ""+clickItem.getName(), Toast.LENGTH_SHORT).show();
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Log.v("I_M_HERE", "I M HERE");
+                   //     Log.v("GET_KEY", snapshot.child(item.getName()).getRef().getKey());
+
+                        String key = "no(";
+
+                        for(DataSnapshot childSnapshot : snapshot.getChildren()){
+                            Log.v("GET_KEY", childSnapshot.getKey());
+                            key = childSnapshot.getKey();
+                            Toast.makeText(Home.this, childSnapshot.getKey(), Toast.LENGTH_SHORT).show();
+                        }
+
+                        Log.v("KEYYYY CATEGORY", key);
+                        Intent toFoodList=new Intent(Home.this, FoodList.class);
+                        toFoodList.putExtra("CategoryId", key);
+                        startActivity(toFoodList);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
                     }
                 });
+
+
+            }
+        };
+
+        categoryList = new ArrayList<>();
+        myAdapterMenu=new MyAdapterMenu(this,categoryList, onClickListener);
+        recyclerMenu.setAdapter(myAdapterMenu);
+
+        database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("NotifyDataSetChanged")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for(DataSnapshot dataSnapshot : snapshot.getChildren()){
+                    Category category = dataSnapshot.getValue(Category.class);
+                    categoryList.add(category);
+                }
+                myAdapterMenu.notifyDataSetChanged();
+                //        Toast.makeText(Home.this, categoryList.get(0).getName(), Toast.LENGTH_SHORT).show();
             }
 
-        };
-        recyclerMenu.setAdapter(adapter);
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
 
     }
 
+    private void setCounterFab(){
+        cart = new Database(this).getCarts();
+        Log.v("SIZE_CART", String.valueOf(cart.size()));
+        counter_fab=0;
+        for (Order order : cart) {
+            Log.v("ORDER_QUANTITY", order.getQuantity());
+            counter_fab += Integer.parseInt(order.getQuantity());
+        }
+        Log.v("FAB_ COUNTER", String.valueOf(counter_fab));
+        fab.setCount(counter_fab);
+        cart.clear();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        fab.setCount(new Database(this).getCountCart());
+        setCounterFab();
+    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -190,10 +266,22 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         if (id == R.id.nav_menu){
 
         }else if(id == R.id.nav_cart){
-
+            Intent intent = new Intent(Home.this, Cart.class);
+            startActivity(intent);
         }else if(id == R.id.nav_orders){
+            Intent intent = new Intent(Home.this, OrderStatus.class);
+            startActivity(intent);
 
         }else if(id == R.id.nav_logout){
+
+            new Database(getBaseContext()).cleanCart();
+
+            //delete data about user
+            Paper.book().destroy();
+
+            Intent intent = new Intent(Home.this, SignIn.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
 
         }
 
@@ -201,6 +289,7 @@ public class Home extends AppCompatActivity implements NavigationView.OnNavigati
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
     @Override
     public void onBackPressed(){

@@ -7,4 +7,12 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#FF0000</color>
+    <color name="teal_background">#b8d7d5</color>
+    <color name="teal_menu">#127973</color>
+    <color name="beige_card">#FFF2DA</color>
+    <color name="blue_btn">#3E5A8F</color>
+    <color name="font_teal_price">#147b75</color>
+    <color name="muted_pink">#BEA9AA</color>
+    <color name="muted_red">#A5464B</color>
 </resources>

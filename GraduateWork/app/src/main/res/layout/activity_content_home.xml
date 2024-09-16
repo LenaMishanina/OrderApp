@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".Home"
+    android:background="@color/teal_background"
     tools:showIn="@layout/activity_bar_home">
 
     <androidx.recyclerview.widget.RecyclerView
